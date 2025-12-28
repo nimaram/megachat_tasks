@@ -5,13 +5,11 @@ A modern Telegram bot built with Python using the `python-telegram-bot` library.
 ## 📋 Table of Contents
 
 - [Features](#features)
-- [Architecture](#architecture)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Development](#development)
 
 ## ✨ Features
 
