@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="flex flex-col h-full"
+  data-current-user-id="{{ user.id }}"
+  hx-ext="ws"
+>
+  <!-- Header -->
+  <div class="p-4 bg-white border-b shadow-sm">
+    <h2 class="text-lg font-bold">{{ other_user.username }}</h2>
+  </div>
+
+  <!-- Messages Area -->
+  <div
+    id="chat-messages"
+    class="flex-grow p-4 overflow-y-auto space-y-4 bg-gray-50 flex flex-col"
+    ws-connect="/ws/chat/{{ conversation.id }}/"
+    x-data="{ 
+      scrollToBottom() {
+        this.$nextTick(() => {
+          this.$el.scrollTop = this.$el.scrollHeight;
+        });
+      }
+    }"
+    x-init="scrollToBottom()"
+    @htmx:ws-after-message="scrollToBottom()"
+  >
+    {% for message in messages %} {% include 'chat/partials/message_bubble.html'%} {% endfor %}
+  </div>
+
+  <!-- Input Area -->
+  <div class="p-4 bg-white border-t">
+    <form
+      hx-post="{% url 'send_message' conversation.id %}"
+      hx-target="#chat-messages"
+      hx-swap="beforeend"
+      class="flex gap-2"
+    >
+      {% csrf_token %}
+      <input
+        type="text"
+        name="content"
+        class="flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Type a message..."
+        required
+        autocomplete="off"
+        id="message-input"
+      />
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

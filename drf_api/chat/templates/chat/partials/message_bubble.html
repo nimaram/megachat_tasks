@@ -1,0 +1,19 @@
+<div 
+    class="max-w-[70%] rounded-lg p-3 message-bubble"
+    data-sender-id="{{ message.sender.id }}"
+    x-data
+    x-init="
+        const currentUserId = parseInt(document.querySelector('[data-current-user-id]')?.dataset.currentUserId || '0');
+        const senderId = parseInt($el.dataset.senderId || '0');
+        if (currentUserId === senderId) {
+            $el.classList.add('bg-blue-600', 'text-white', 'self-end');
+        } else {
+            $el.classList.add('bg-gray-200', 'text-gray-800', 'self-start');
+        }
+    "
+>
+    <p>{{ message.content }}</p>
+    <span class="text-xs opacity-75 block text-right mt-1">
+        {{ message.timestamp|date:"H:i" }}
+    </span>
+</div>
